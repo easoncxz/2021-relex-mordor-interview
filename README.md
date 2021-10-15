@@ -29,4 +29,4 @@ $ stack build
 
 - Don't remove/disable the tests
 - Follow the problem statement
-- Pretty much everything else is up to the interviewer, refactor code, modify cabal, add tests etc.
+- Pretty much everything else is up to the interviewee, refactor code, modify cabal, add tests etc.
