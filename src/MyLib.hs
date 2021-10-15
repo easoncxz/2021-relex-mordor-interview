@@ -13,6 +13,8 @@ import Network.Wai.Handler.Warp (run)
 
 -- TODO: You should implement this function. See the separately provided
 -- description on what the application should do.
+--
+-- Hint, scotty, servant and yesod are libraries that can provide the 'Application'.
 application :: IO Application
 application = error "implement me"
 
