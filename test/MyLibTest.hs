@@ -24,6 +24,9 @@ main = hspec $ do
       got <- get ("http://localhost:"<> show port <> "/requests")
       (got ^? responseBody . key "value" . _Number) `shouldBe` Just 0
     it "counts the requests" $ \port -> hedgehog $ do
+      -- WARNING: This test has shown to be really slow on some systems,
+      -- especially on macs. If you have the chance, try running the tests on a
+      -- linux machine instead
       n <- forAll $ Gen.integral (Range.linear 0 100)
 
       -- Prepare
