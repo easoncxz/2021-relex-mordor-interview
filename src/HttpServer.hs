@@ -5,7 +5,6 @@ module HttpServer
   ( counterApplication
   ) where
 
-import Control.Monad.IO.Class (liftIO)
 import Data.Proxy (Proxy(Proxy))
 import Network.Wai (Application)
 import Servant.API ((:<|>)((:<|>)), (:>), Get, JSON, Post)
@@ -25,12 +24,13 @@ counterServer counter = handleIncrement :<|> handleReset
     handleIncrement
       -- | Important: the returned count should not count the request
       -- that is currently being handled! Off-by-one error otherwise.
+      -- We should peek, remember the value, and only then increment.
      = do
-      current <- liftIO $ Storage.peek counter
-      _ <- liftIO $ Storage.increment counter
+      current <- Storage.peek counter
+      _ <- Storage.increment counter
       return (CounterResponse current)
     handleReset = do
-      zero <- liftIO $ Storage.reset counter
+      zero <- Storage.reset counter
       return (CounterResponse zero)
 
 counterApplication :: Counter -> Application

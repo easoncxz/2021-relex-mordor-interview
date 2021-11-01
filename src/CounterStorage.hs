@@ -9,6 +9,7 @@ module CounterStorage
   ) where
 
 import qualified Control.Concurrent.STM as STM
+import Control.Monad.IO.Class (MonadIO, liftIO)
 
 newtype Counter =
   Counter
@@ -21,19 +22,21 @@ newCounter = do
   return (Counter var)
 
 -- | Get current count
-peek :: Counter -> IO Int
-peek Counter {tvar} = STM.atomically (STM.readTVar tvar)
+peek :: (MonadIO m) => Counter -> m Int
+peek Counter {tvar} = liftIO $ STM.atomically (STM.readTVar tvar)
 
 -- | Increment and return new count
-increment :: Counter -> IO Int
+increment :: (MonadIO m) => Counter -> m Int
 increment Counter {tvar} =
+  liftIO $
   STM.atomically $ do
     STM.modifyTVar tvar (+ 1)
     STM.readTVar tvar
 
 -- | Reset count and return zero
-reset :: Counter -> IO Int
+reset :: (MonadIO m) => Counter -> m Int
 reset Counter {tvar} =
+  liftIO $
   STM.atomically $ do
     STM.writeTVar tvar 0
     return 0
