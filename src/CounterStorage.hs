@@ -20,15 +20,20 @@ newCounter = do
   var <- STM.atomically $ STM.newTVar 0
   return (Counter var)
 
+-- | Get current count
 peek :: Counter -> IO Int
 peek Counter {tvar} = STM.atomically (STM.readTVar tvar)
 
--- | Returns new count
+-- | Increment and return new count
 increment :: Counter -> IO Int
 increment Counter {tvar} =
   STM.atomically $ do
     STM.modifyTVar tvar (+ 1)
     STM.readTVar tvar
 
-reset :: Counter -> IO ()
-reset Counter {tvar} = STM.atomically $ STM.writeTVar tvar 0
+-- | Reset count and return zero
+reset :: Counter -> IO Int
+reset Counter {tvar} =
+  STM.atomically $ do
+    STM.writeTVar tvar 0
+    return 0

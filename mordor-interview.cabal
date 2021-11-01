@@ -59,6 +59,10 @@ library
     import:           deps
     -- Modules exported by the library.
     exposed-modules:  MyLib
+                    -- Make life easier on the REPL:
+                    , CounterStorage
+                    , HttpEntities
+                    , HttpServer
 
     -- Modules included in this library but not exported.
     -- other-modules:
