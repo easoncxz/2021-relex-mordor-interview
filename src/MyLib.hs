@@ -1,12 +1,11 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
+
 module MyLib
   ( defaultMain
-
   -- Exposed for testing purposes
   , application
-  )
-  where
+  ) where
 
 import Network.Wai (Application)
 import Network.Wai.Handler.Warp (run)

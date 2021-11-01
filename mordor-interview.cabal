@@ -77,6 +77,11 @@ library
                     , text
                     , bytestring
 
+                    -- More:
+                    , aeson
+                    , stm
+                    , servant
+                    , servant-server
 
 executable mordor-interview
     import:           deps
