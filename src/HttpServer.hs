@@ -22,8 +22,12 @@ type CounterApi
 counterServer :: Counter -> Server CounterApi
 counterServer counter = handleIncrement :<|> handleReset
   where
-    handleIncrement = do
-      current <- liftIO $ Storage.increment counter
+    handleIncrement
+      -- | Important: the returned count should not count the request
+      -- that is currently being handled! Off-by-one error otherwise.
+     = do
+      current <- liftIO $ Storage.peek counter
+      _ <- liftIO $ Storage.increment counter
       return (CounterResponse current)
     handleReset = do
       zero <- liftIO $ Storage.reset counter

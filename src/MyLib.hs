@@ -23,4 +23,8 @@ application = do
   return (counterApplication counter)
 
 defaultMain :: IO ()
-defaultMain = run 8080 =<< application
+defaultMain = do
+  a <- application
+  let port = 8080
+  putStrLn ("Starting application on port " ++ show port)
+  run port a
