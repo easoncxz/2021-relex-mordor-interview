@@ -129,3 +129,4 @@ test-suite mordor-interview-test
                     , lens-aeson
                     , hedgehog
                     , mtl
+                    , async

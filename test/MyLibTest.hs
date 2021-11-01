@@ -4,6 +4,8 @@ module Main (main) where
 -- System under test
 import MyLib (application)
 
+import CounterStorageTests (counterStorageSpec)
+
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import Test.Hspec
@@ -18,7 +20,13 @@ import Network.Wai.Handler.Warp (withApplication)
 import Network.Wreq (get, post, responseBody)
 
 main :: IO ()
-main = hspec $ do
+main =
+  hspec $ do
+    counterStorageSpec
+    officialSpec
+
+officialSpec :: Spec
+officialSpec =
   withServer $ describe "Server is alive" $ do
     it "has an endpoint for requests" $ \port -> do
       got <- get ("http://localhost:"<> show port <> "/requests")
