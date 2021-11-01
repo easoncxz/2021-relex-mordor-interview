@@ -9,6 +9,8 @@ module MyLib
 
 import Network.Wai (Application)
 import Network.Wai.Handler.Warp (run)
+import qualified System.Environment as Env
+import Text.Read (readMaybe)
 
 import CounterStorage (newCounter)
 import HttpServer (counterApplication)
@@ -22,9 +24,18 @@ application = do
   counter <- newCounter
   return (counterApplication counter)
 
+getPort :: IO Int
+getPort = do
+  maybeStr <- Env.lookupEnv "PORT"
+  let port =
+        maybe 8080 id $ do
+          str <- maybeStr
+          readMaybe str
+  return port
+
 defaultMain :: IO ()
 defaultMain = do
   a <- application
-  let port = 8080
+  port <- getPort
   putStrLn ("Starting application on port " ++ show port)
   run port a
